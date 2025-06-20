@@ -2,7 +2,7 @@ import type { ServiceInfo } from "@/types/Services";
 import React, { useEffect, useState } from "react";
 import HttpMethodTag from "../http-method-tag";
 import StatusBar from "../status-bar";
-import { getStatusService } from "@/api/api";
+import { getStatusCheckService, getStatusService } from "@/api/api";
 import { Tooltip } from "@heroui/react";
 import type { StatusCheckInfo, StatusInfo } from "@/types/Status";
 import BaseButton from "../elements/base-button";
@@ -86,7 +86,7 @@ const StatusInfoDisplay: React.FC<StatusInfoDisplayProps> = ({ service }) => {
             color="primary"
             variant="faded"
             onPress={() => {
-              getStatusService(service.id)
+              getStatusCheckService(service.id)
                 .then((res) => {
                   console.log("====================================");
                   console.log("Status check", res.data);

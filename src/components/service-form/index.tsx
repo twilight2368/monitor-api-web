@@ -136,7 +136,13 @@ const ServiceForm: React.FC<ServiceFormProps> = ({
         <label className="text-sm font-medium">
           Cron Expression (optional)
         </label>
-        <Input {...register("cron")} placeholder="e.g. */5 * * * *" />
+        <Input
+          {...register("cron", {
+            required: "Cron is required",
+          })}
+          required
+          placeholder="e.g. */5 * * * *"
+        />
       </div>
 
       {/* Payload */}
