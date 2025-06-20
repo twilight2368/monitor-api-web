@@ -8,5 +8,5 @@ export type ServiceInfo = {
   data?: Record<string, any>;
   cookies?: Record<string, string>;
   timeout?: number;
-  cron?: string;
+  cron: string;
 };

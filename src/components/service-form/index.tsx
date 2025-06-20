@@ -70,6 +70,7 @@ const ServiceForm: React.FC<ServiceFormProps> = ({
       <div className="space-y-1  w-full">
         <label className="text-sm font-medium">Service Name</label>
         <Input
+          required
           {...register("name", { required: "Name is required" })}
           placeholder="e.g. My API Service"
         />
@@ -81,7 +82,9 @@ const ServiceForm: React.FC<ServiceFormProps> = ({
       {/* URL */}
       <div className="space-y-1  w-full">
         <label className="text-sm font-medium">URL</label>
+
         <Input
+          required
           {...register("url", {
             required: "URL is required",
             pattern: {
@@ -104,6 +107,7 @@ const ServiceForm: React.FC<ServiceFormProps> = ({
           control={control}
           render={({ field }) => (
             <Select
+              required
               selectedKeys={[field.value]} // ensures the initial value is selected
               onSelectionChange={(keys) => field.onChange(Array.from(keys)[0])}
             >
@@ -134,7 +138,7 @@ const ServiceForm: React.FC<ServiceFormProps> = ({
       {/* Cron */}
       <div className="space-y-1 w-full">
         <label className="text-sm font-medium">
-          Cron Expression (optional)
+          Cron Expression
         </label>
         <Input
           {...register("cron", {

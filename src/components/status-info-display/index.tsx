@@ -8,6 +8,7 @@ import type { StatusCheckInfo, StatusInfo } from "@/types/Status";
 import BaseButton from "../elements/base-button";
 import BaseModal from "../elements/base-modal";
 import StatusTag from "../status-tag";
+import { cronToIntervalMs, msToTime } from "@/utils";
 
 type StatusInfoDisplayProps = {
   service: ServiceInfo;
@@ -17,6 +18,7 @@ const StatusInfoDisplay: React.FC<StatusInfoDisplayProps> = ({ service }) => {
   const [status, setStatus] = useState<StatusCheckInfo[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const [statusInfo, setStatusInfo] = useState<StatusInfo>();
+  const [checking, setChecking] = useState(false);
   useEffect(() => {
     const interval = setInterval(() => {
       getStatusService(service.id)
@@ -37,20 +39,47 @@ const StatusInfoDisplay: React.FC<StatusInfoDisplayProps> = ({ service }) => {
           console.log(err);
           console.log("====================================");
         });
-    }, 1000);
+    }, cronToIntervalMs(service.cron) + 100);
 
     return () => clearInterval(interval);
   }, []);
 
+  useEffect(() => {
+    getStatusService(service.id)
+      .then((res) => {
+        // console.log("====================================");
+        // console.log(status);
+        // console.log("====================================");
+        // console.log("====================================");
+        // console.log(res.data);
+        // console.log("====================================");
+        setStatus((status) => {
+          const updated = [...status, res.data];
+          return updated.slice(-35); // keep last 30 items
+        });
+      })
+      .catch((err) => {
+        console.log("====================================");
+        console.log(err);
+        console.log("====================================");
+      });
+  }, [checking]);
+
   return (
     <>
       <div className="flex flex-col gap-2 p-3 border rounded-lg bg-white shadow-sm">
-        <div className="flex justify-between items-center text-xs">
+        <div className="flex justify-between items-center">
           <Tooltip content={service?.name}>
             <span className="text-gray-800 text-lg font-bold truncate break-all">
               {service?.name}
             </span>
           </Tooltip>
+        </div>
+
+        <div className="mb-2">
+          <span className="font-mono text-gray-500 bg-gray-100 px-2 py-0.5 rounded text-xs">
+            Cron: {msToTime(cronToIntervalMs(service.cron) + 100)}
+          </span>
         </div>
 
         <div className="flex flex-row items-center gap-2 text-sm font-mono">
@@ -91,6 +120,7 @@ const StatusInfoDisplay: React.FC<StatusInfoDisplayProps> = ({ service }) => {
                   console.log("====================================");
                   console.log("Status check", res.data);
                   console.log("====================================");
+                  setChecking(!checking);
                   setStatusInfo(res.data);
                   setIsOpen(true);
                 })
@@ -142,7 +172,10 @@ const StatusInfoDisplay: React.FC<StatusInfoDisplayProps> = ({ service }) => {
                         : "text-red-600"
                     }`}
                   >
-                    {statusInfo.response_time} ms
+                    {statusInfo?.response_time
+                      ? statusInfo?.response_time
+                      : "NaN"}{" "}
+                    ms
                   </span>
                 </div>
               )}
@@ -161,9 +194,9 @@ const StatusInfoDisplay: React.FC<StatusInfoDisplayProps> = ({ service }) => {
                         clipRule="evenodd"
                       />
                     </svg>
-                    <div>
+                    <div className=" w-full">
                       <p className="text-sm font-medium text-red-800">Error</p>
-                      <p className="text-sm text-red-700 mt-1">
+                      <p className="text-xs text-red-700 mt-1 w-full">
                         {statusInfo?.error}
                       </p>
                     </div>

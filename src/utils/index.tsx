@@ -7,6 +7,9 @@ import parser from "cron-parser";
  */
 
 export function cronToIntervalMs(cronExpr: string): number {
+  if (!cronExpr) {
+    return 1000;
+  }
   try {
     const options = { currentDate: new Date() };
     const interval = parser.parse(cronExpr, options);
@@ -18,4 +21,13 @@ export function cronToIntervalMs(cronExpr: string): number {
   } catch (err: any) {
     throw new Error(`Invalid CRON expression: ${err.message}`);
   }
+}
+
+export function msToTime(ms: number): string {
+  const milliseconds = ms % 1000;
+  const seconds = Math.floor((ms / 1000) % 60);
+  const minutes = Math.floor((ms / (1000 * 60)) % 60);
+  const hours = Math.floor(ms / (1000 * 60 * 60));
+
+  return `${hours}h ${minutes}m ${seconds}s ${milliseconds}ms`;
 }
