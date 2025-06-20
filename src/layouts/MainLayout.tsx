@@ -19,7 +19,6 @@ const MainLayout = () => {
         <div className="flex-1 p-6 overflow-auto">
           <div className="text-black">
             <Outlet />
-            <div className="h-20">{/**Footer */}</div>
           </div>
         </div>
       </div>

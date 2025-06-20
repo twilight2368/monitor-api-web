@@ -8,15 +8,15 @@ import { Snippet } from "@heroui/react";
 import BaseModal from "../elements/base-modal";
 import ServiceForm from "../service-form";
 import { deleteService, updateService } from "@/api/api";
-import { ServiceMapper } from "@/utils/mapper/ServiceMapper";
-import type { ServiceInfoResponse } from "@/types/ServiceRes";
 
 type ServiceInfoCompactDisplayProps = {
   service: ServiceInfo;
+  actionAfterUpdate: () => void;
 };
 
 const ServiceInfoCompactDisplay: React.FC<ServiceInfoCompactDisplayProps> = ({
   service,
+  actionAfterUpdate,
 }) => {
   const [showDetails, setShowDetails] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -68,9 +68,7 @@ const ServiceInfoCompactDisplay: React.FC<ServiceInfoCompactDisplayProps> = ({
             onPress={() => {
               deleteService(service.id)
                 .then((res) => {
-                  console.log("====================================");
-                  console.log(res.data);
-                  console.log("====================================");
+                  actionAfterUpdate();
                 })
                 .catch(() => {});
             }}
@@ -124,6 +122,7 @@ const ServiceInfoCompactDisplay: React.FC<ServiceInfoCompactDisplayProps> = ({
                   console.log("Update", res.data);
                   console.log("====================================");
                   setIsOpen(false);
+                  actionAfterUpdate();
                 })
                 .catch((err) => {
                   console.log("====================================");

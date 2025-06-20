@@ -6,7 +6,7 @@ type Status = "UP" | "DOWN";
 
 type StatusBarProps = {
   status: Status;
-  time: string; // e.g., "2025-06-19 14:30"
+  time?: number;
   className: string;
 };
 
@@ -14,7 +14,7 @@ const StatusBar: React.FC<StatusBarProps> = ({ status, time, className }) => {
   const colorClass = status === "UP" ? "bg-green-400" : "bg-red-400";
 
   return (
-    <Tooltip content={time}>
+    <Tooltip content={`${time}`} size="sm">
       <div
         className={classNames(
           "rounded-full cursor-help",

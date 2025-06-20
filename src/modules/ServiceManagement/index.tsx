@@ -3,7 +3,6 @@ import BaseButton from "@/components/elements/base-button";
 import BaseModal from "@/components/elements/base-modal";
 import ServiceForm from "@/components/service-form";
 import ServiceInfoCompactDisplay from "@/components/service-info-display";
-import { mockServices } from "@/mock";
 import type { ServiceInfo } from "@/types/Services";
 import React, { useEffect, useState } from "react";
 
@@ -16,9 +15,9 @@ const ServiceManagement = () => {
     getService()
       .then((res) => {
         setData(res.data);
-        console.log("====================================");
-        console.log(res.data);
-        console.log("====================================");
+        // console.log("====================================");
+        // console.log(res.data);
+        // console.log("====================================");
       })
       .catch((err) => {
         console.log("====================================");
@@ -46,7 +45,15 @@ const ServiceManagement = () => {
         </div>
         <div className="w-full space-y-3">
           {data.map((service, index) => {
-            return <ServiceInfoCompactDisplay key={index} service={service} />;
+            return (
+              <ServiceInfoCompactDisplay
+                key={index}
+                service={service}
+                actionAfterUpdate={() => {
+                  setIsNeedReload(!isNeedReload);
+                }}
+              />
+            );
           })}
         </div>
       </div>

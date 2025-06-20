@@ -1,7 +1,13 @@
 export type StatusInfo = {
-  id: number;
-  id_service: number;
+  name: string;
+  status_code: string;
+  status: "UP" | "DOWN";
+  response_time?: number;
+  error?: string;
+};
+
+export type StatusCheckInfo = {
   name: string;
   status: "UP" | "DOWN";
-  finish_time: string;
+  finish_time?: number;
 };

@@ -22,7 +22,6 @@ const StatusManagement = () => {
       });
   }, []);
 
-  
   return (
     <>
       <div className="w-full min-h-96">
