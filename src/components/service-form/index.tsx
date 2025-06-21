@@ -107,7 +107,6 @@ const ServiceForm: React.FC<ServiceFormProps> = ({
           control={control}
           render={({ field }) => (
             <Select
-              required
               selectedKeys={[field.value]} // ensures the initial value is selected
               onSelectionChange={(keys) => field.onChange(Array.from(keys)[0])}
             >
@@ -137,9 +136,7 @@ const ServiceForm: React.FC<ServiceFormProps> = ({
 
       {/* Cron */}
       <div className="space-y-1 w-full">
-        <label className="text-sm font-medium">
-          Cron Expression
-        </label>
+        <label className="text-sm font-medium">Cron Expression</label>
         <Input
           {...register("cron", {
             required: "Cron is required",

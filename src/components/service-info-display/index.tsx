@@ -118,9 +118,9 @@ const ServiceInfoCompactDisplay: React.FC<ServiceInfoCompactDisplayProps> = ({
               // console.log("====================================");
               updateService(service.id, form_data)
                 .then((res) => {
-                  console.log("====================================");
-                  console.log("Update", res.data);
-                  console.log("====================================");
+                  // console.log("====================================");
+                  // console.log("Update", res.data);
+                  // console.log("====================================");
                   setIsOpen(false);
                   actionAfterUpdate();
                 })

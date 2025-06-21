@@ -9,7 +9,8 @@ import BaseButton from "../elements/base-button";
 import BaseModal from "../elements/base-modal";
 import StatusTag from "../status-tag";
 import { cronToIntervalMs, msToTime } from "@/utils";
-
+import { MdOutlineWifiTetheringError } from "react-icons/md";
+import ResponseTimeTag from "../response-time";
 type StatusInfoDisplayProps = {
   service: ServiceInfo;
 };
@@ -39,7 +40,7 @@ const StatusInfoDisplay: React.FC<StatusInfoDisplayProps> = ({ service }) => {
           console.log(err);
           console.log("====================================");
         });
-    }, cronToIntervalMs(service.cron) + 100);
+    }, cronToIntervalMs(service.cron));
 
     return () => clearInterval(interval);
   }, []);
@@ -78,7 +79,7 @@ const StatusInfoDisplay: React.FC<StatusInfoDisplayProps> = ({ service }) => {
 
         <div className="mb-2">
           <span className="font-mono text-gray-500 bg-gray-100 px-2 py-0.5 rounded text-xs">
-            Cron: {msToTime(cronToIntervalMs(service.cron) + 100)}
+            Cron: {msToTime(cronToIntervalMs(service.cron))}
           </span>
         </div>
 
@@ -94,8 +95,9 @@ const StatusInfoDisplay: React.FC<StatusInfoDisplayProps> = ({ service }) => {
         <div className=" w-fit p-2 flex flex-row justify-start gap-1 items-center ">
           {status?.length ? (
             <>
-              {status.map((item: StatusCheckInfo) => (
+              {status.map((item: StatusCheckInfo, i) => (
                 <StatusBar
+                  key={i}
                   status={item.status}
                   time={item.finish_time}
                   className="w-2 h-8"
@@ -117,9 +119,6 @@ const StatusInfoDisplay: React.FC<StatusInfoDisplayProps> = ({ service }) => {
             onPress={() => {
               getStatusCheckService(service.id)
                 .then((res) => {
-                  console.log("====================================");
-                  console.log("Status check", res.data);
-                  console.log("====================================");
                   setChecking(!checking);
                   setStatusInfo(res.data);
                   setIsOpen(true);
@@ -137,7 +136,6 @@ const StatusInfoDisplay: React.FC<StatusInfoDisplayProps> = ({ service }) => {
         <BaseModal isOpen={isOpen} onOpenChange={setIsOpen}>
           <div className="bg-white  p-6 max-w-md">
             <h2 className="text-2xl font-semibold text-gray-800 mb-6 flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-green-500"></div>
               Status Info
             </h2>
 
@@ -154,46 +152,21 @@ const StatusInfoDisplay: React.FC<StatusInfoDisplayProps> = ({ service }) => {
                   Status
                 </span>
                 <div className="flex items-center gap-2">
-                  <StatusTag status={statusInfo?.status || "DOWN"} />
+                  <StatusTag status={statusInfo?.status || "UNKNOWN"} />
                 </div>
               </div>
 
-              {statusInfo?.response_time !== undefined && (
-                <div className="flex justify-between items-center py-2 border-b border-gray-100">
-                  <span className="text-sm font-medium text-gray-600">
-                    Response Time
-                  </span>
-                  <span
-                    className={`font-medium ${
-                      statusInfo.response_time < 100
-                        ? "text-green-600"
-                        : statusInfo.response_time < 500
-                        ? "text-yellow-600"
-                        : "text-red-600"
-                    }`}
-                  >
-                    {statusInfo?.response_time
-                      ? statusInfo?.response_time
-                      : "NaN"}{" "}
-                    ms
-                  </span>
-                </div>
-              )}
+              <div className="flex justify-between items-center py-2 border-b border-gray-100">
+                <span className="text-sm font-medium text-gray-600">
+                  Response Time
+                </span>
+                <ResponseTimeTag response_time={statusInfo?.response_time} />
+              </div>
 
               {statusInfo?.error && (
                 <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-md">
                   <div className="flex items-start gap-2">
-                    <svg
-                      className="w-5 h-5 text-red-500 mt-0.5 flex-shrink-0"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
+                    <MdOutlineWifiTetheringError />
                     <div className=" w-full">
                       <p className="text-sm font-medium text-red-800">Error</p>
                       <p className="text-xs text-red-700 mt-1 w-full">

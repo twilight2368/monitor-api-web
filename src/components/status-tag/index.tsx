@@ -1,15 +1,15 @@
 import React from "react";
-import { Chip, Tooltip } from "@heroui/react";
-import classNames from "classnames";
+import { Chip } from "@heroui/react";
 
-type Status = "UP" | "DOWN";
+type Status = "UP" | "DOWN" | "UNKNOWN";
 
 type StatusTagProps = {
   status: Status;
 };
 
 const StatusTag: React.FC<StatusTagProps> = ({ status }) => {
-  const colorClass = status === "UP" ? "success" : "danger";
+  const colorClass =
+    status === "UNKNOWN" ? "default" : status === "UP" ? "success" : "danger";
 
   return (
     <Chip color={colorClass} size="md">

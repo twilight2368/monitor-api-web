@@ -3,18 +3,18 @@ import BaseButton from "@/components/elements/base-button";
 import BaseModal from "@/components/elements/base-modal";
 import ServiceForm from "@/components/service-form";
 import ServiceInfoCompactDisplay from "@/components/service-info-display";
-import type { ServiceInfo } from "@/types/Services";
-import React, { useEffect, useState } from "react";
+import { useServicesContext } from "@/context/service-context/ServicesContext";
+import { useEffect, useState } from "react";
 
 const ServiceManagement = () => {
-  const [data, setData] = useState<ServiceInfo[]>([]);
+  const { services, setServices } = useServicesContext();
   const [isOpen, setIsOpen] = useState(false);
   const [isNeedReload, setIsNeedReload] = useState(false);
 
   useEffect(() => {
     getService()
       .then((res) => {
-        setData(res.data);
+        setServices(res.data);
         // console.log("====================================");
         // console.log(res.data);
         // console.log("====================================");
@@ -44,7 +44,7 @@ const ServiceManagement = () => {
           </div>
         </div>
         <div className="w-full space-y-3">
-          {data.map((service, index) => {
+          {services.map((service, index) => {
             return (
               <ServiceInfoCompactDisplay
                 key={index}
