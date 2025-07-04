@@ -106,9 +106,10 @@ const ServiceForm: React.FC<ServiceFormProps> = ({
         <Controller
           name="method"
           control={control}
+          defaultValue="GET"
           render={({ field }) => (
             <Select
-              selectedKeys={[field.value]} // ensures the initial value is selected
+              selectedKeys={[field.value]}
               onSelectionChange={(keys) => field.onChange(Array.from(keys)[0])}
             >
               {HTTP_METHODS.map((method) => (

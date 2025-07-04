@@ -10,3 +10,13 @@ services:
       - /app/node_modules
     env_file:
       - .env.development
+  api-monitor-prod:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"
+    env_file:
+      - .env.production
+    environment:
+      - NODE_ENV=production
