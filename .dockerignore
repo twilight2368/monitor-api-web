@@ -1,0 +1,26 @@
+# Node modules - don't copy local deps into image
+node_modules
+**/node_modules
+
+# Vite build output
+dist
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Optional OS and IDE files
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.vscode
+.idea
+*.swp
+
+# Git
+.git
+.gitignore

@@ -9,7 +9,7 @@ import {
   Button,
 } from "@heroui/react";
 import type { ServiceInfo } from "@/types/Services";
-import parser from "cron-parser";
+import { isValidCron } from "cron-validator";
 
 const HTTP_METHODS = ["GET", "POST", "PUT", "DELETE", "PATCH"];
 
@@ -141,10 +141,16 @@ const ServiceForm: React.FC<ServiceFormProps> = ({
         <Input
           {...register("cron", {
             required: "Cron is required",
+            validate: (value) =>
+              isValidCron(value, { seconds: false }) ||
+              "Invalid cron expression",
           })}
           required
           placeholder="e.g. */5 * * * *"
         />
+        {errors.cron && (
+          <p className="text-xs text-red-500">{errors.cron.message}</p>
+        )}
       </div>
 
       {/* Payload */}
