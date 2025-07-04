@@ -1,11 +1,11 @@
-import React, { type ReactNode, isValidElement, cloneElement } from "react";
+import React, { type ReactNode,  } from "react";
 import {
   Modal,
   ModalContent,
   ModalHeader,
   ModalBody,
   ModalFooter,
-  useDisclosure,
+ 
 } from "@heroui/react";
 
 type ModalSize =
@@ -91,7 +91,7 @@ const BaseModal: React.FC<BaseModalProps> = ({
         disableAnimation={disableAnimation}
       >
         <ModalContent>
-          {(onClose) => (
+          {() => (
             <>
               {title && <ModalHeader>{title}</ModalHeader>}
               <ModalBody>{children}</ModalBody>

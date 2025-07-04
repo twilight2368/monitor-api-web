@@ -11,6 +11,7 @@ import StatusTag from "../status-tag";
 import { cronToIntervalMs, msToTime } from "@/utils";
 import { MdOutlineWifiTetheringError } from "react-icons/md";
 import ResponseTimeTag from "../response-time";
+import { toast } from "react-toastify";
 type StatusInfoDisplayProps = {
   service: ServiceInfo;
 };
@@ -59,10 +60,11 @@ const StatusInfoDisplay: React.FC<StatusInfoDisplayProps> = ({ service }) => {
           return updated.slice(-35); // keep last 30 items
         });
       })
-      .catch((err) => {
-        console.log("====================================");
-        console.log(err);
-        console.log("====================================");
+      .catch(() => {
+        //
+        toast.error(
+          `${service?.name} không thể lấy dữ liệu trạng thái. Xin vui lòng kiểm tra`
+        );
       });
   }, [checking]);
 
@@ -127,7 +129,7 @@ const StatusInfoDisplay: React.FC<StatusInfoDisplayProps> = ({ service }) => {
               setIsOpen(true);
             }}
           >
-            Check status
+            Kiểm tra
           </BaseButton>
         </div>
       </div>
@@ -136,7 +138,7 @@ const StatusInfoDisplay: React.FC<StatusInfoDisplayProps> = ({ service }) => {
         <BaseModal isOpen={isOpen} onOpenChange={setIsOpen}>
           <div className="bg-white  p-6 max-w-md">
             <h2 className="text-2xl font-semibold text-gray-800 mb-6 flex items-center gap-2">
-              Status Info
+              Thông tin trạng thái của dịch vụ
             </h2>
 
             <div className="space-y-4">

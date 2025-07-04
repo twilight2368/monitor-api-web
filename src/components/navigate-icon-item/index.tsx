@@ -1,6 +1,7 @@
 import React, { type ReactNode } from "react";
 import { useLocation, useNavigate } from "react-router";
 import { FaBars } from "react-icons/fa6";
+import classNames from "classnames";
 
 type NavigateItemWithIconOnlyProps = {
   path: string;
@@ -21,7 +22,10 @@ const NavigateItemWithIconOnly: React.FC<NavigateItemWithIconOnlyProps> = ({
 
   return (
     <div
-      className={`p-2 ${isActive ? "bg-blue-500 rounded-md text-white" : ""}`}
+      className={classNames(
+        "text-white p-3 rounded-md",
+        isActive ? "bg-blue-500" : ""
+      )}
       onClick={() => {
         navigate(path);
       }}

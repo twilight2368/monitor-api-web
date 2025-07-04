@@ -19,7 +19,10 @@ export function cronToIntervalMs(cronExpr: string): number {
 
     return second - first;
   } catch (err: any) {
-    throw new Error(`Invalid CRON expression: ${err.message}`);
+    console.log("====================================");
+    console.log(`Invalid CRON expression: ${err.message}`);
+    console.log("====================================");
+    return 1000;
   }
 }
 

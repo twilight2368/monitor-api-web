@@ -8,7 +8,7 @@ const StatusManagement = () => {
     <>
       <div className="w-full min-h-96">
         <div className="w-full mb-6">
-          <h1 className=" text-3xl ">Status</h1>
+          <h1 className=" text-3xl ">Trạng thái của dịch vụ</h1>
         </div>
         <div className="w-full grid grid-cols-3 gap-6">
           {services.map((service) => (

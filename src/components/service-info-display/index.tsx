@@ -8,6 +8,7 @@ import { Snippet } from "@heroui/react";
 import BaseModal from "../elements/base-modal";
 import ServiceForm from "../service-form";
 import { deleteService, updateService } from "@/api/api";
+import { toast } from "react-toastify";
 
 type ServiceInfoCompactDisplayProps = {
   service: ServiceInfo;
@@ -67,10 +68,13 @@ const ServiceInfoCompactDisplay: React.FC<ServiceInfoCompactDisplayProps> = ({
             color="danger"
             onPress={() => {
               deleteService(service.id)
-                .then((res) => {
+                .then(() => {
+                  toast.success("Xóa dịch vụ thành công...");
                   actionAfterUpdate();
                 })
-                .catch(() => {});
+                .catch(() => {
+                  toast.success("Xóa dịch vụ không thành công!");
+                });
             }}
           >
             <FaTrash />
@@ -107,7 +111,7 @@ const ServiceInfoCompactDisplay: React.FC<ServiceInfoCompactDisplayProps> = ({
         <BaseModal
           isOpen={isOpen}
           onOpenChange={setIsOpen}
-          title="Update service"
+          title="Cập nhật dịch vụ"
           size="xl"
         >
           <ServiceForm
@@ -117,17 +121,19 @@ const ServiceInfoCompactDisplay: React.FC<ServiceInfoCompactDisplayProps> = ({
               // console.log(form_data);
               // console.log("====================================");
               updateService(service.id, form_data)
-                .then((res) => {
+                .then(() => {
                   // console.log("====================================");
                   // console.log("Update", res.data);
                   // console.log("====================================");
                   setIsOpen(false);
+                  toast.success("Cập nhật dịch vụ thành công!");
                   actionAfterUpdate();
                 })
-                .catch((err) => {
-                  console.log("====================================");
-                  console.log(err);
-                  console.log("====================================");
+                .catch(() => {
+                  // console.log("====================================");
+                  // console.log(err);
+                  // console.log("====================================");
+                  toast.error("Cập nhật dịch vụ thất bại!");
                 });
             }}
           />
