@@ -39,6 +39,10 @@ export const getStatusService = (id: number) => {
   return axios.get(`${API_URL}/services/${id}/status`);
 };
 
+export const getStatusesService = (id: number) => {
+  return axios.get(`${API_URL}/services/${id}/statuses`);
+};
+
 export const getStatusCheckService = (id: number) => {
   return axios.get(`${API_URL}/services/${id}/check`);
 };

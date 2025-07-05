@@ -2,7 +2,11 @@ import type { ServiceInfo } from "@/types/Services";
 import React, { useEffect, useState } from "react";
 import HttpMethodTag from "../http-method-tag";
 import StatusBar from "../status-bar";
-import { getStatusCheckService, getStatusService } from "@/api/api";
+import {
+  getStatusCheckService,
+  getStatusesService,
+  getStatusService,
+} from "@/api/api";
 import { Tooltip } from "@heroui/react";
 import type { StatusCheckInfo, StatusInfo } from "@/types/Status";
 import BaseButton from "../elements/base-button";
@@ -23,50 +27,31 @@ const StatusInfoDisplay: React.FC<StatusInfoDisplayProps> = ({ service }) => {
   const [checking, setChecking] = useState(false);
   useEffect(() => {
     const interval = setInterval(() => {
-      getStatusService(service.id)
+      getStatusesService(service.id)
         .then((res) => {
-          // console.log("====================================");
-          // console.log(status);
-          // console.log("====================================");
-          // console.log("====================================");
-          // console.log(res.data);
-          // console.log("====================================");
-          setStatus((status) => {
-            const updated = [...status, res.data];
-            return updated.slice(-35); // keep last 30 items
-          });
+          setStatus(res?.data.slice(-50) || []);
         })
-        .catch((err) => {
-          console.log("====================================");
-          console.log(err);
-          console.log("====================================");
+        .catch(() => {
+          toast.error(
+            `${service?.name} không thể lấy dữ liệu trạng thái. Xin vui lòng kiểm tra`
+          );
         });
     }, cronToIntervalMs(service.cron));
 
     return () => clearInterval(interval);
-  }, []);
+  }, [service.cron, service.id, service?.name]);
 
   useEffect(() => {
-    getStatusService(service.id)
+    getStatusesService(service.id)
       .then((res) => {
-        // console.log("====================================");
-        // console.log(status);
-        // console.log("====================================");
-        // console.log("====================================");
-        // console.log(res.data);
-        // console.log("====================================");
-        setStatus((status) => {
-          const updated = [...status, res.data];
-          return updated.slice(-35); // keep last 30 items
-        });
+        setStatus(res?.data.slice(-50) || []);
       })
       .catch(() => {
-        //
         toast.error(
           `${service?.name} không thể lấy dữ liệu trạng thái. Xin vui lòng kiểm tra`
         );
       });
-  }, [checking]);
+  }, [checking, service.id, service?.name]);
 
   return (
     <>
@@ -102,7 +87,7 @@ const StatusInfoDisplay: React.FC<StatusInfoDisplayProps> = ({ service }) => {
                   key={i}
                   status={item.status}
                   time={item.finish_time}
-                  className="w-2 h-8"
+                  className="w-1 h-8"
                 />
               ))}
             </>
@@ -148,7 +133,6 @@ const StatusInfoDisplay: React.FC<StatusInfoDisplayProps> = ({ service }) => {
                   {statusInfo?.name}
                 </span>
               </div>
-
               <div className="flex justify-between items-center py-2 border-b border-gray-100">
                 <span className="text-sm font-medium text-gray-600">
                   Status
