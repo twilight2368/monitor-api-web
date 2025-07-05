@@ -9,5 +9,5 @@ export type StatusInfo = {
 export type StatusCheckInfo = {
   name: string;
   status: "UP" | "DOWN";
-  finish_time?: number;
+  finish_time?: string;
 };

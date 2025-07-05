@@ -6,7 +6,7 @@ type Status = "UP" | "DOWN";
 
 type StatusBarProps = {
   status: Status;
-  time?: number;
+  time?: string;
   className: string;
 };
 
